@@ -1,0 +1,72 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Write your model definitions here
+ */
+
+namespace sc.demonstrator.net
+
+asset Company identified by ID {
+    o String ID
+    o String name
+    o Double lat  //latitude
+    o Double long //longitude
+}
+
+asset Product identified by ID {
+    o String ID
+    o Position position
+    o HandoverContract[] contracts
+}
+
+concept HandoverContract {
+	--> Company issuer
+    --> Company next
+    o Boolean ready default=false
+}
+  
+enum Position {
+    o PLANTATION
+    o SHIPPING
+    o PACKAGING
+    o WHOLESALE
+    o RETAIL
+}
+
+participant User identified by ID {
+    o String ID
+}
+
+transaction ProductCreation {
+  o String ID 
+  --> Company issuer
+  --> Company next
+}
+
+transaction ProductHandover {
+  --> Product product
+  --> Company issuer
+  --> Company next
+}
+  
+transaction ProductRelease {
+  --> Product product
+  --> Company issuer
+}
+
+
+transaction Setup {
+}
+
